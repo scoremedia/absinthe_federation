@@ -34,6 +34,7 @@ defmodule Absinthe.Federation.Schema.Phase.AddFederatedDirectives do
     |> maybe_add_override_directive(meta)
     |> maybe_add_inaccessible_directive(meta)
     |> maybe_add_tag_directive(meta)
+    |> maybe_add_interface_object_directive(meta)
   end
 
   @spec maybe_add_key_directive(term(), map()) :: term()
@@ -114,6 +115,14 @@ defmodule Absinthe.Federation.Schema.Phase.AddFederatedDirectives do
   end
 
   defp maybe_add_tag_directive(node, _meta), do: node
+
+  defp maybe_add_interface_object_directive(node, %{tag: name, absinthe_adapter: adapter}) do
+    directive = Directive.build("interfaceObject", adapter, name: name)
+
+    add_directive(node, directive)
+  end
+
+  defp maybe_add_interface_object_directive(node, _meta), do: node
 
   defp add_directive(%{directives: directives} = node, directive) do
     %{node | directives: [directive | directives]}

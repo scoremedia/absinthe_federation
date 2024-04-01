@@ -306,6 +306,20 @@ defmodule Absinthe.Federation.Notation do
   end
 
   @doc """
+  ## SDL Output
+
+      type User @interfaceObject {
+        id: ID!
+        name: String @tag(name: "internal")
+      }
+  """
+  defmacro interface_object do
+    quote do
+      meta :interface_object
+    end
+  end
+
+  @doc """
   The `@link` directive links definitions from an external specification to this schema.
   Every Federation 2 subgraph uses the `@link` directive to import the other federation-specific directives.
 
